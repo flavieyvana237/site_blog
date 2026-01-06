@@ -1,0 +1,12 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Mon Blog{% endblock %}</title>
+    {% tailwind_css %}
+</head>
+<body>
+    {% block content %}{% endblock %}
+</body>
+</html>

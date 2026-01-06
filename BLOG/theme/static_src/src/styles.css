@@ -1,0 +1,22 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+/**
+  * A catch-all path to Django template files, JavaScript, and Python files
+  * that contain Tailwind CSS classes and will be scanned by Tailwind to generate the final CSS file.
+  *
+  * If your final CSS file is not being updated after code changes, you may want to broaden or narrow
+  * the scope of this path.
+  */
+@source "../../../**/*.{html,py,js}";
+
+
+/* theme/static_src/styles.css */
+.btn-primary {
+    @apply bg-green-800 text-blue-200 font-bold py-2 px-4 rounded hover:bg-red-300;
+}
+
+.card {
+    @apply bg-pink-500 shadow-md rounded-lg p-6 mb-6;
+}
+
