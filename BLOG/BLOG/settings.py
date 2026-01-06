@@ -37,10 +37,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+# allauth
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
     'my_blog',
     'tailwind',
     'theme',
     'django_browser_reload',         # Auto reload (DEV)
+
+
 ]
 
 MIDDLEWARE = [
@@ -53,6 +62,8 @@ MIDDLEWARE = [
 
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
+
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -80,13 +91,17 @@ WSGI_APPLICATION = 'BLOG.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'site_blog_db',
+        'USER': 'site_blog_user',
+        'PASSWORD': 'flavieyvana',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
 
 
 # Password validation
@@ -121,4 +136,23 @@ STATIC_URL = 'static/'
 TAILWIND_APP_NAME = 'theme'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+SITE_ID = 1
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # ou 'optional'
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
+LOGIN_REDIRECT_URL = '/'  # Après login
+LOGOUT_REDIRECT_URL = '/'
+
+# Pour emails (dev : console, prod : SMTP)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Pour tester
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+
 
