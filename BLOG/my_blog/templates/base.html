@@ -5,8 +5,14 @@
     <meta charset="UTF-8">
     <title>{% block title %}Mon Blog{% endblock %}</title>
     {% tailwind_css %}
+    {% load static %}
+<link href="{% static 'css/styles.css' %}" rel="stylesheet">
+
 </head>
-<body>
-    {% block content %}{% endblock %}
+<body class="bg-gray-100 min-h-screen">
+
+    {% block content %}
+    {% endblock %}
+
 </body>
 </html>

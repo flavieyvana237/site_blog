@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -74,7 +75,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
 
         # Tu pourras ajouter BASE_DIR / "templates" plus tard si besoin
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'my_blog/templates'],
 
         'APP_DIRS': True,
         'OPTIONS': {
@@ -132,7 +133,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATICFILES_DIRS = [
+    BASE_DIR / "theme" / "static",  # ← Ajoute ça pour servir css/dist/styles.css depuis theme
+]
 TAILWIND_APP_NAME = 'theme'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -153,6 +156,10 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
+
+ACCOUNT_FORMS = {
+    'signup': 'my_blog.forms.CustomSignupForm',
+}
 
 
 

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load i18n tailwind_tags %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 px-4 py-12">
+    <div class="w-full max-w-lg bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden transform transition-all hover:scale-[1.01]">
+        <div class="px-10 py-12">
+            <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-8">
+                Créer votre compte
+            </h2>
+
+            {% if form.errors %}
+            <div class="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg mb-6" role="alert">
+                <strong>Erreur :</strong> Vérifiez vos informations.
+            </div>
+            {% endif %}
+
+            <form method="post" action="{% url 'account_signup' %}">
+                {% csrf_token %}
+
+                <div class="space-y-6">
+                    <!-- Prénom -->
+                    <div>
+                        <label for="id_first_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            {{ form.first_name.label }}
+                        </label>
+                        {{ form.first_name }}
+                    </div>
+
+                    <!-- Nom -->
+                    <div>
+                        <label for="id_last_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            {{ form.last_name.label }}
+                        </label>
+                        {{ form.last_name }}
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label for="id_email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            {{ form.email.label }}
+                        </label>
+                        {{ form.email }}
+                    </div>
+
+                    <!-- Username -->
+                    <div>
+                        <label for="id_username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            {{ form.username.label }}
+                        </label>
+                        {{ form.username }}
+                    </div>
+
+                    <!-- Password 1 -->
+                    <div>
+                        <label for="id_password1" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            {{ form.password1.label }}
+                        </label>
+                        {{ form.password1 }}
+                    </div>
+
+                    <!-- Password 2 -->
+                    <div>
+                        <label for="id_password2" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            {{ form.password2.label }}
+                        </label>
+                        {{ form.password2 }}
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-800 text-white font-medium rounded-lg text-lg px-5 py-3 text-center transition duration-200 transform hover:scale-[1.02]">
+                            S'inscrire
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <p class="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
+                Déjà un compte ?
+                <a href="{% url 'account_login' %}" class="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 transition">
+                    Se connecter
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
