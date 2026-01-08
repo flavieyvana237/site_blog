@@ -1,10 +1,109 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}Dashboard - {{ user.username }}{% endblock %}
 
 {% block content %}
 <div class="container mx-auto px-4 py-12">
-    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-8">Bienvenue {{ user.username }} !</h1>
-    <p class="text-xl text-gray-700 dark:text-gray-300">Ton dashboard est en construction… bientôt tes articles, stats, etc. !</p>
+    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-12 text-center">
+        Bienvenue sur ton Dashboard, {{ user.username }} ! ✨
+    </h1>
+
+    <!-- Stats rapides en cartes -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        <div class="bg-gradient-to-br from-indigo-500 to-purple-600 p-8 rounded-2xl shadow-xl text-white text-center">
+            <h3 class="text-5xl font-extrabold">{{ total_posts }}</h3>
+            <p class="text-xl mt-2">Articles publiés</p>
+        </div>
+        <div class="bg-gradient-to-br from-green-500 to-teal-600 p-8 rounded-2xl shadow-xl text-white text-center">
+            <h3 class="text-5xl font-extrabold">{{ total_views }}</h3>
+            <p class="text-xl mt-2">Vues totales</p>
+        </div>
+        <div class="bg-gradient-to-br from-pink-500 to-red-600 p-8 rounded-2xl shadow-xl text-white text-center">
+            <h3 class="text-5xl font-extrabold">{{ total_likes }}</h3>
+            <p class="text-xl mt-2">Likes reçus</p>
+        </div>
+        <div class="bg-gradient-to-br from-yellow-500 to-orange-600 p-8 rounded-2xl shadow-xl text-white text-center">
+            <h3 class="text-5xl font-extrabold">{{ total_comments }}</h3>
+            <p class="text-xl mt-2">Commentaires</p>
+        </div>
+    </div>
+
+    <!-- Liste des articles avec actions -->
+    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden">
+        <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Tes articles</h2>
+          <div class="flex justify-between items-center mb-6">
+
+    <a href="{% url 'post_create' %}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition shadow-md">
+        + Nouvel article
+    </a>
+</div>
+        </div>
+
+        {% if my_posts %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead class="bg-gray-50 dark:bg-gray-800">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Titre</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Vues</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Likes</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Statut</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    {% for post in my_posts %}
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                        <td class="px-6 py-4">
+                            <a href="{{ post.get_absolute_url }}" class="text-lg font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+                                {{ post.title }}
+                            </a>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
+                            {{ post.pub_date|date:"d M Y" }}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
+                            {{ post.views }}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
+                            {{ post.likes }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if post.is_published %}
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
+                                Publié
+                            </span>
+                            {% else %}
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300">
+                                Brouillon
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-sm font-medium">
+                            <a href="{% url 'post_edit' post.slug %}" class="text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 mr-6">
+                                Éditer
+                            </a>
+                            <a href="{% url 'post_delete' post.slug %}" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
+                                Supprimer
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-20">
+            <p class="text-2xl text-gray-600 dark:text-gray-400">
+                Tu n'as pas encore publié d'article...
+            </p>
+            <p class="mt-4 text-lg text-gray-500 dark:text-gray-500">
+                C'est le moment de partager ta première histoire ! ✨
+            </p>
+        </div>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

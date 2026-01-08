@@ -136,6 +136,9 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "theme" / "static",  # ← Ajoute ça pour servir css/dist/styles.css depuis theme
 ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 TAILWIND_APP_NAME = 'theme'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -150,7 +153,8 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username'   # login avec username (ou 'username
 # Redirections
 LOGIN_REDIRECT_URL = '/'                     # après connexion → homepage
 ACCOUNT_SIGNUP_REDIRECT_URL = '/accounts/login/'  # après inscription → page login
-LOGOUT_REDIRECT_URL = '/accounts/login/'     # après déconnexion → login
+ACCOUNT_LOGOUT_ON_GET = True  # permet logout direct via GET (mais moins sécurisé)
+ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'  # après déconnexion → login
 
 # Pour emails (dev : console, prod : SMTP)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Pour tester
@@ -163,6 +167,7 @@ AUTHENTICATION_BACKENDS = (
 ACCOUNT_FORMS = {
     'signup': 'my_blog.forms.CustomSignupForm',
 }
+
 
 
 

@@ -1,5 +1,7 @@
 from allauth.account.forms import SignupForm
+
 from django import forms
+from .models import Post
 
 
 class CustomSignupForm(SignupForm):
@@ -29,3 +31,12 @@ class CustomSignupForm(SignupForm):
         user.last_name = self.cleaned_data["last_name"]
         user.save()
         return user
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'conclusion', 'category', 'image', 'is_published']
+        widgets = {
+            'content': forms.Textarea(attrs={'rows': 10, 'class': 'w-full px-4 py-3 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500'}),
+            'conclusion': forms.Textarea(attrs={'rows': 5}),
+        }

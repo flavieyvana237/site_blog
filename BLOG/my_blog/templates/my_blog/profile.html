@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+            Mon Profil
+        </h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <!-- Photo + infos rapides -->
+            <div class="lg:col-span-1 text-center">
+                <div class="w-40 h-40 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 mx-auto flex items-center justify-center text-white text-6xl font-bold shadow-xl">
+                    {{ user.username|slice:":1"|upper }}
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mt-6">{{ user.get_full_name|default:user.username }}</h2>
+                <p class="text-gray-600 dark:text-gray-400 mt-2">{{ user.email }}</p>
+                <p class="text-lg text-indigo-600 dark:text-indigo-400 mt-4 font-medium">
+                    {{ total_posts }} article{{ total_posts|pluralize }} publié{{ total_posts|pluralize }}
+                </p>
+            </div>
+
+            <!-- Formulaire modification -->
+            <div class="lg:col-span-2 bg-white dark:bg-gray-800 p-10 rounded-2xl shadow-xl">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">Modifier mes informations</h3>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Prénom</label>
+                            {{ form.first_name }}
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nom</label>
+                            {{ form.last_name }}
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                        {{ form.email }}
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-8 rounded-lg transition shadow-md">
+                            Enregistrer les modifications
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
