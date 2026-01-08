@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Vérification de votre email{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
+    <div class="w-full max-w-md bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl text-center">
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">
+            Vérification de votre email
+        </h2>
+
+        <div class="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 px-6 py-4 rounded-lg mb-6">
+            <p class="text-lg">
+                Un email de confirmation a été envoyé à <strong>{{ request.user.email }}</strong>.
+            </p>
+            <p class="mt-3">
+                Cliquez sur le lien dans l'email pour activer votre compte !
+            </p>
+        </div>
+
+        <p class="text-gray-600 dark:text-gray-400 mb-4">
+            Vérifiez votre boîte de réception (et vos spams au cas où).
+        </p>
+
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+            Vous serez redirigé automatiquement après confirmation.
+        </p>
+
+        <div class="mt-8">
+            <a href="{% url 'account_login' %}" class="text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium">
+                Retour à la connexion
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

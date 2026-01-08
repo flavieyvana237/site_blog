@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     'django_browser_reload',         # Auto reload (DEV)
-
+    'widget_tweaks',
 
 ]
 
@@ -141,13 +141,16 @@ TAILWIND_APP_NAME = 'theme'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SITE_ID = 1
 
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # ou 'optional'
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
-LOGIN_REDIRECT_URL = '/'  # Après login
-LOGOUT_REDIRECT_URL = '/'
+# Allauth : plus de vérification email obligatoire (mode dev)
+ACCOUNT_EMAIL_VERIFICATION = 'none'          # ← saute la vérification
+ACCOUNT_EMAIL_REQUIRED = False               # ← email pas obligatoire (optionnel)
+ACCOUNT_USERNAME_REQUIRED = True             # garde username obligatoire
+ACCOUNT_AUTHENTICATION_METHOD = 'username'   # login avec username (ou 'username_email' si tu veux)
+
+# Redirections
+LOGIN_REDIRECT_URL = '/'                     # après connexion → homepage
+ACCOUNT_SIGNUP_REDIRECT_URL = '/accounts/login/'  # après inscription → page login
+LOGOUT_REDIRECT_URL = '/accounts/login/'     # après déconnexion → login
 
 # Pour emails (dev : console, prod : SMTP)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Pour tester
