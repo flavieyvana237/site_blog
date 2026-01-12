@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-#p-5ym*w&zwyv6p!2oheqzm1rvfwcd7kh#gq&&(^508w@f4@j%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -37,24 +38,48 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+# allauth
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    'my_blog',
+    'tailwind',
+    'theme',
+    'django_browser_reload',         # Auto reload (DEV)
+    'widget_tweaks',
+
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+
+    # Auto reload navigateur
+    'django_browser_reload.middleware.BrowserReloadMiddleware',
+
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
+
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 ROOT_URLCONF = 'BLOG.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+
+        # Tu pourras ajouter BASE_DIR / "templates" plus tard si besoin
+        'DIRS': [
+            BASE_DIR / 'templates',
+            BASE_DIR / 'my_blog/templates'],
+
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -65,38 +90,34 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = 'BLOG.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'site_blog_db',
+        'USER': 'site_blog_user',
+        'PASSWORD': 'flavieyvana',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
 
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
+
 
 
 # Internationalization
@@ -115,3 +136,41 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "theme" / "static",  # ← Ajoute ça pour servir css/dist/styles.css depuis theme
+]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+TAILWIND_APP_NAME = 'theme'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+SITE_ID = 1
+
+# Allauth : plus de vérification email obligatoire (mode dev)
+ACCOUNT_EMAIL_VERIFICATION = 'none'          # ← saute la vérification
+ACCOUNT_EMAIL_REQUIRED = False               # ← email pas obligatoire (optionnel)
+ACCOUNT_USERNAME_REQUIRED = True             # garde username obligatoire
+ACCOUNT_AUTHENTICATION_METHOD = 'username'   # login avec username (ou 'username_email' si tu veux)
+
+# Redirections
+LOGIN_REDIRECT_URL = '/'                     # après connexion → homepage
+ACCOUNT_SIGNUP_REDIRECT_URL = '/accounts/login/'  # après inscription → page login
+ACCOUNT_LOGOUT_ON_GET = True  # permet logout direct via GET (mais moins sécurisé)
+ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'  # après déconnexion → login
+
+# Pour emails (dev : console, prod : SMTP)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Pour tester
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+ACCOUNT_FORMS = {
+    'signup': 'my_blog.forms.CustomSignupForm',
+}
+
+
+
+

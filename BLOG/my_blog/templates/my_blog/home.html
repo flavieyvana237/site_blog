@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Accueil - MyBlog{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<div class="relative h-[70vh] min-h-[500px] overflow-hidden">
+    <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80" alt="Hero blog" class="absolute inset-0 w-full h-full object-cover">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/40 to-black/70 flex items-center justify-center">
+        <div class="text-center text-white px-6 max-w-4xl">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 drop-shadow-lg">Bienvenue sur MyBlog</h1>
+            <p class="text-xl md:text-2xl drop-shadow-md">Consultez, publiez et partagez vos histoires en toute liberté et sécurité.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Catégories -->
+<div class="container mx-auto px-4 py-16">
+    {% for category in categories %}
+    <div class="mb-16">
+        <!-- Titre catégorie plus attirant -->
+        <h2 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-8 tracking-wide">
+            {{ category.name }}
+            <span class="text-2xl font-normal text-gray-600 ml-3">({{ category.posts.count }})</span>
+        </h2>
+
+        <!-- Cards plus grandes et lisibles -->
+        <div class="flex overflow-x-auto space-x-8 pb-6 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-indigo-500/50 scrollbar-track-gray-200 dark:scrollbar-track-gray-800">
+            {% for post in category.posts.all|slice:":8" %}
+            <div class="flex-none w-[380px] bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-3 border border-gray-200 dark:border-gray-700">
+                {% if post.image %}
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-full h-64 object-cover">
+                {% endif %}
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 line-clamp-2">
+                        <a href="{{ post.get_absolute_url }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+                            {{ post.title }}
+                        </a>
+                    </h3>
+                    <p class="text-gray-700 dark:text-gray-300 mb-6 line-clamp-4 text-base leading-relaxed">
+                        {{ post.content|truncatewords:50 }}
+                    </p>
+                    <div class="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+                        <span class="font-medium">Par {{ post.author.username }}</span>
+                        <span>{{ post.pub_date|date:"d M Y" }}</span>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="flex-none w-96 text-center text-gray-500 dark:text-gray-400 italic text-lg">
+                Pas d'article dans cette catégorie pour l'instant...
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% empty %}
+    <div class="text-center py-20 text-gray-600 dark:text-gray-400 text-2xl font-medium">
+        Aucune catégorie pour l'instant... Ajoutez-en dans l'admin !
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

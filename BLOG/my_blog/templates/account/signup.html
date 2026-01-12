@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load i18n tailwind_tags %}
+{% load widget_tweaks %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800 px-4 py-12">
+    <div class="w-full max-w-md bg-gray-900/80 backdrop-blur-md border border-gray-700/50 rounded-2xl shadow-2xl overflow-hidden">
+        <div class="px-10 py-12">
+            <h2 class="text-3xl font-bold text-center text-white mb-10 tracking-wide">
+                Créer votre compte
+            </h2>
+
+            {% if form.errors %}
+            <div class="bg-red-900/30 border border-red-500/50 text-red-300 px-4 py-3 rounded-lg mb-6 text-center">
+                Erreur : Vérifiez vos informations.
+            </div>
+            {% endif %}
+
+            <form method="post" action="{% url 'account_signup' %}">
+                {% csrf_token %}
+
+                <div class="space-y-6">
+                    <!-- Prénom & Nom côte à côte -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Prénom</label>
+                            {{ form.first_name|add_class:"w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition" }}
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Nom</label>
+                            {{ form.last_name|add_class:"w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition" }}
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                        {{ form.email|add_class:"w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition" }}
+                    </div>
+
+                    <!-- Username -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Username</label>
+                        {{ form.username|add_class:"w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition" }}
+                    </div>
+
+                    <!-- Passwords -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                        {{ form.password1|add_class:"w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition" }}
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Password (again)</label>
+                        {{ form.password2|add_class:"w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition" }}
+                    </div>
+
+                    <button type="submit" class="w-full py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-[1.02]">
+                        S'inscrire
+                    </button>
+                </div>
+            </form>
+
+            <p class="mt-8 text-center text-sm text-gray-400">
+                Déjà un compte ?
+                <a href="{% url 'account_login' %}" class="text-indigo-400 hover:text-indigo-300 font-medium transition">
+                    Se connecter
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
