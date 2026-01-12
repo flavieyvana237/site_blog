@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-#p-5ym*w&zwyv6p!2oheqzm1rvfwcd7kh#gq&&(^508w@f4@j%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -75,7 +75,10 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
 
         # Tu pourras ajouter BASE_DIR / "templates" plus tard si besoin
-        'DIRS': [BASE_DIR / 'my_blog/templates'],
+        'DIRS': [
+            BASE_DIR / 'templates',
+            BASE_DIR / 'my_blog/templates'],
+
 
         'APP_DIRS': True,
         'OPTIONS': {
