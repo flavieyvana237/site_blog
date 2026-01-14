@@ -19,12 +19,22 @@ from django.urls import path
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('accounts/', include('allauth.urls')),
     path("__reload__/", include("django_browser_reload.urls")),
     path("", include("my_blog.urls")),  # ou ton app
+
+    #pour gerer les api
+
+    # ... tes urls
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 
 ]
 if settings.DEBUG:

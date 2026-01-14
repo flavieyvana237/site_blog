@@ -13,6 +13,11 @@ from django.urls import reverse_lazy
 from .forms import PostForm
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+#pour les serializers
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework import generics, permissions
+from .serializers import PostSerializer
 
 class HomeView(ListView):
     model = Post
@@ -154,3 +159,13 @@ class ProfileView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['total_posts'] = Post.objects.filter(author=self.request.user).count()
         return context
+
+
+    #creation d'un serializers
+class PostListAPIView(generics.ListCreateAPIView):  # ← on change ListAPIView en ListCreateAPIView
+    queryset = Post.objects.filter(is_published=True).order_by('-pub_date')
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]  # ← lecture publique, création réservée aux connectés
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)  # ← associe automatiquement l’auteur à l’

@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import HomeView, PostDetailView, DashboardView, add_comment, like_post, PostDeleteView, PostUpdateView, PostCreateView, ProfileView
+from .views import HomeView, PostDetailView, DashboardView, add_comment, like_post, PostDeleteView, PostUpdateView, PostCreateView, ProfileView, PostListAPIView
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
@@ -15,6 +15,7 @@ urlpatterns = [
     path('post/<slug:slug>/edit/', PostUpdateView.as_view(), name='post_edit'),
     path('post/<slug:slug>/delete/', PostDeleteView.as_view(), name='post_delete'),
 
-
+# Nouvelle partie API
+    path('api/posts/', PostListAPIView.as_view(), name='api-posts-list'),
 
 ]
