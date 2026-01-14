@@ -51,6 +51,10 @@ INSTALLED_APPS = [
     'django_browser_reload',         # Auto reload (DEV)
     'widget_tweaks',
 
+    #pour le teste de DRF
+    'rest_framework',
+    'drf_spectacular',
+
 ]
 
 MIDDLEWARE = [
@@ -169,6 +173,18 @@ AUTHENTICATION_BACKENDS = (
 
 ACCOUNT_FORMS = {
     'signup': 'my_blog.forms.CustomSignupForm',
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'MyBlog API',
+    'DESCRIPTION': 'API de mon blog communautaire personnel',
+    'VERSION': '1.0.0',
 }
 
 
